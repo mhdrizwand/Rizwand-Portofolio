@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { ThemeProvider } from "@/components/theme-provider";
 import "./globals.css";
 import localFont from "next/font/local";
+import CustomCursor from "@/components/CustomCursor";
 
 const rehgal = localFont({
   src: "../public/Font/Rehgal.ttf",
@@ -47,6 +48,7 @@ export default function RootLayout({
         className={`${rehgal.variable} ${inter.variable} ${playfair.variable} font-sans antialiased`}
       >
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          <CustomCursor />
           {children}
         </ThemeProvider>
         <Analytics />
