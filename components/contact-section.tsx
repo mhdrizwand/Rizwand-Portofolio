@@ -3,12 +3,11 @@
 import { useState } from "react";
 import {
   Mail,
-  Phone,
+  MessageCircle,
   MapPin,
   Send,
   Instagram,
   Linkedin,
-  Facebook,
 } from "lucide-react";
 
 export function ContactSection() {
@@ -59,16 +58,18 @@ export function ContactSection() {
                   </p>
                 </div>
               </a>
-    
+
               <a
                 href="tel:+62"
                 className="flex items-center gap-4 rounded-lg border border-border bg-card p-4 transition-all hover:border-primary/50"
               >
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
-                  <Phone size={18} className="text-primary" />
+                  <MessageCircle size={18} className="text-primary" />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-foreground">Telepon</p>
+                  <p className="text-sm font-medium text-foreground">
+                    Whatsapp
+                  </p>
                   <p className="text-sm text-muted-foreground">
                     +62 852 1413 9915
                   </p>
@@ -91,9 +92,17 @@ export function ContactSection() {
             {/* Social Links */}
             <div className="flex gap-3">
               {[
-                { icon: Instagram, href: "#", label: "Instagram" },
-                { icon: Linkedin, href: "#", label: "LinkedIn" },
-                { icon: Facebook, href: "#", label: "Facebook" },
+                {
+                  icon: Instagram,
+                  href: "https://instagram.com/mhdrizwand_",
+                  label: "Instagram",
+                },
+                {
+                  icon: Linkedin,
+                  href: "https://linkedin.com/in/m-rizwan-b28a26319/",
+                  label: "LinkedIn",
+                },
+                { icon: MessageCircle, href: "#", label: "Whatsapp" },
               ].map((s) => (
                 <a
                   key={s.label}
