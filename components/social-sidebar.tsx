@@ -8,7 +8,7 @@ const socialLinks = [
     href: "https://instagram.com/mhdrizwand_",
     label: "Instagram",
   },
-  { icon: Phone, href: "https://wa.me/085214139915", label: "WhatsApp" },
+  { icon: Phone, href: "https://wa.me/6285214139915", label: "WhatsApp" },
   {
     icon: Linkedin,
     href: "https://linkedin.com/in/m-rizwan-b28a26319/",

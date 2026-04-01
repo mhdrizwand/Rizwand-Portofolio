@@ -1,47 +1,48 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { useTheme } from "next-themes"
-import { Menu, X, Sun, Moon } from "lucide-react"
+import { useState, useEffect } from "react";
+import { useTheme } from "next-themes";
+import { Menu, X, Sun, Moon } from "lucide-react";
 
 const navLinks = [
-  { label: "Home", href: "#home" },
-  { label: "About", href: "#about" },
+  { label: "Beranda", href: "#home" },
+  { label: "Tentang", href: "#about" },
   { label: "Pengalaman", href: "#pengalaman" },
-  { label: "Education", href: "#education" },
+  { label: "Sertifikat", href: "#sertifikat" },
+  { label: "Pendidikan", href: "#education" },
   { label: "Kontak", href: "#kontak" },
-]
+];
 
 export function Navbar() {
-  const [isOpen, setIsOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
-  const [activeSection, setActiveSection] = useState("home")
-  const { theme, setTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true)
-  }, [])
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50)
+      setScrolled(window.scrollY > 50);
 
-      const sections = navLinks.map((link) => link.href.slice(1))
+      const sections = navLinks.map((link) => link.href.slice(1));
       for (let i = sections.length - 1; i >= 0; i--) {
-        const section = document.getElementById(sections[i])
+        const section = document.getElementById(sections[i]);
         if (section) {
-          const rect = section.getBoundingClientRect()
+          const rect = section.getBoundingClientRect();
           if (rect.top <= 120) {
-            setActiveSection(sections[i])
-            break
+            setActiveSection(sections[i]);
+            break;
           }
         }
       }
-    }
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <nav
@@ -130,5 +131,5 @@ export function Navbar() {
         </div>
       </div>
     </nav>
-  )
+  );
 }

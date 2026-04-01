@@ -120,9 +120,9 @@
   * {
     @apply border-border outline-ring/50;
   }
-body {
-  cursor: none;
-}
+  body {
+    cursor: none;
+  }
   body {
     @apply bg-background text-foreground;
   }
@@ -136,23 +136,23 @@ html {
   font-family: var(--font-rehgal);
 }
 
-/* .grid-bg {
+.grid-bg {
   background-image:
-    linear-gradient(rgba(94, 234, 212, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(94, 234, 212, 0.06) 1px, transparent 1px);
+    linear-gradient(rgba(94, 234, 212, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(94, 234, 212, 0.04) 1px, transparent 1px);
   background-size: 60px 60px;
 }
 
 :root .grid-bg {
   background-image:
-    linear-gradient(rgba(10, 10, 15, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(10, 10, 15, 0.06) 1px, transparent 1px);
+    linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
   background-size: 60px 60px;
 }
 
 .dark .grid-bg {
   background-image:
-    linear-gradient(rgba(94, 234, 212, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(94, 234, 212, 0.06) 1px, transparent 1px);
+    linear-gradient(rgba(94, 234, 212, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(94, 234, 212, 0.04) 1px, transparent 1px);
   background-size: 60px 60px;
-} */
+}

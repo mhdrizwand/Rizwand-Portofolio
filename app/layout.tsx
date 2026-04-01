@@ -6,6 +6,7 @@ import "./globals.css";
 import localFont from "next/font/local";
 import CustomCursor from "@/components/CustomCursor";
 
+
 const rehgal = localFont({
   src: "../public/Font/Rehgal.ttf",
   variable: "--font-rehgal",
@@ -25,9 +26,18 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "M. Rizwan - Portfolio",
+  title: "M. Rizwan — Fresh Graduate | Desain Grafis | Geografi",
   description:
-    "Portfolio website of M. Rizwan - Fresh Graduate | Pendidikan Geografi | Desain Grafis",
+    "Portfolio M. Rizwan, lulusan Pendidikan Geografi IPK 3.92 dengan keahlian Desain Grafis, Humas, dan Administrasi.",
+  openGraph: {
+    title: "M. Rizwan — Portfolio",
+    description: "Fresh Graduate | Desain Grafis | Geografi | IPK 3.92",
+    url: "https://rizwand-portofolio.vercel.app",
+    siteName: "Rizwan Portfolio",
+    images: [{ url: "/images/Profil.jpeg" }],
+    locale: "id_ID",
+    type: "website",
+  },
 };
 
 export const viewport: Viewport = {

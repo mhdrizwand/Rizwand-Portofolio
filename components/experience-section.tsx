@@ -1,261 +1,321 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, Eye, Briefcase } from "lucide-react";
 
-const MAX_VISIBLE_IMAGES = 4;
+// ─── HOOK: Intersection Observer ─────────────────────────────────
+function useInView(threshold = 0.12) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) { setInView(true); obs.disconnect(); } },
+      { threshold }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [threshold]);
+  return { ref, inView };
+}
+
+// ─── DATA ─────────────────────────────────────────────────────────
+const MAX_VISIBLE = 4;
 
 const experiences = [
   {
-    title: "LAPAS KELAS III CALANG",
-    role: "MAGANG",
-    period: "Nov 2025 - Sekarang",
+    title: "Lapas Kelas III Calang",
+    role: "Magang — Pembina & Humas",
+    period: "Nov 2025",
+    periodEnd: "Sekarang",
+    tag: "Aktif",
+    tagColor: "#22C55E",
+    accent: "#5eead4",
     description:
       "Sebagai Pembina Kepribadian, mendukung administrasi dan pelaksanaan program pembinaan warga binaan serta menyusun laporan kegiatan. Di bagian Humas, bertanggung jawab dalam pembuatan desain materi publikasi dan media informasi lembaga.",
     images: [
-      "/images/PAS 1.png",
-      "/images/PAS 2.png",
-      "/images/PAS 3.png",
-      "/images/PAS 4.png",
-      "/images/PAS 5.png",
-      "/images/PAS 6.png",
-      "/images/PAS 7.png",
-      "/images/PAS 8.png",
-      "/images/PAS 9.png",
-      "/images/PAS 10.png",
+      "/images/porto/PAS 11.png",
+      "/images/porto/PAS 12.png",
+      "/images/porto/PAS 1.png",
+      "/images/porto/PAS 2.png",
+      "/images/porto/PAS 3.png",
+      "/images/porto/PAS 4.png",
+      "/images/porto/PAS 5.png",
+      "/images/porto/PAS 6.png",
+      "/images/porto/PAS 7.png",
+      "/images/porto/PAS 8.png",
+      "/images/porto/PAS 9.png",
+      "/images/porto/PAS 10.png",
     ],
+    skills: ["Desain Grafis", "Humas", "Administrasi"],
   },
   {
-    title: "BPVP BANDA ACEH",
-    role: "PELATIHAN & SERTIFIKASI",
-    period: "Sep 2025 - Oct 2025",
+    title: "BPVP Banda Aceh",
+    role: "Pelatihan & Sertifikasi Surveyor",
+    period: "Sep 2025",
+    periodEnd: "Okt 2025",
+    tag: "Sertifikasi",
+    tagColor: "#3B82F6",
+    accent: "#60A5FA",
     description:
-      "Dinyatakan lulus seluruh unit kompetensi Sertifikasi Surveyor yang meliputi penerapan K3L, komunikasi dalam proses pengukuran, persiapan dan pengoperasian alat ukur, pemetaan situasi, stake out, serta evaluasi hasil pengukuran. Memahami standar industri dan prosedur kerja lapangan secara sistematis.",
+      "Dinyatakan lulus seluruh unit kompetensi Sertifikasi Surveyor meliputi penerapan K3L, komunikasi dalam proses pengukuran, persiapan dan pengoperasian alat ukur, pemetaan situasi, stake out, serta evaluasi hasil pengukuran.",
     images: [
-      "/images/BLK 1.png",
-      "/images/BLK 2.png",
-      "/images/BLK 3.png",
-      "/images/BLK 4.png",
-      "/images/BLK 5.png",
-      "/images/BLK 6.png",
+      "/images/porto/BLK 1.png",
+      "/images/porto/BLK 2.png",
+      "/images/porto/BLK 3.png",
+      "/images/porto/BLK 4.png",
+      "/images/porto/BLK 5.png",
+      "/images/porto/BLK 6.png",
     ],
+    skills: ["Survei Lapangan", "K3L", "Pemetaan"],
   },
   {
-    title: "CV. RESTU UMMI",
-    role: "DESAIN GRAFIS, ADMINISTRASI & CUSTOMER SERVICE",
-    period: "Aug 2024 - Sep 2025",
+    title: "CV. Restu Ummi",
+    role: "Desain Grafis, Administrasi & CS",
+    period: "Agt 2024",
+    periodEnd: "Nov 2025",
+    tag: "Kerja",
+    tagColor: "#8B5CF6",
+    accent: "#A78BFA",
     description:
-      "Melayani dan merespons pelanggan secara online/offline, memberikan informasi produk serta menangani keluhan. Mengelola pemesanan, pencatatan transaksi, dan data pelanggan, mendesain produk sesuai kebutuhan pelanggan, serta berkoordinasi dengan tim untuk kelancaran dan efektivitas operasional.",
+      "Melayani dan merespons pelanggan secara online/offline, memberikan informasi produk serta menangani keluhan. Mendesain produk sesuai kebutuhan pelanggan, mengelola pemesanan dan data pelanggan secara sistematis.",
     images: [
-      "/images/RU 1.png",
-      "/images/RU 2.png",
-      "/images/RU 3.png",
-      "/images/RU 4.png",
-      "/images/RU 5.png",
+      "/images/porto/RU 1.png",
+      "/images/porto/RU 2.png",
+      "/images/porto/RU 3.png",
+      "/images/porto/RU 4.png",
+      "/images/porto/RU 5.png",
     ],
+    skills: ["CorelDRAW", "Customer Service", "Administrasi"],
   },
   {
-    title: "UNIVERSITAS AL WASHLIYAH DARUSSALAM",
-    role: "ASLAB & ASDOS",
-    period: "Aug 2023 - Aug 2025",
+    title: "Universitas Al-Washliyah Darussalam",
+    role: "Asisten Lab & Asisten Dosen",
+    period: "Agt 2023",
+    periodEnd: "Agt 2025",
+    tag: "Akademik",
+    tagColor: "#F59E0B",
+    accent: "#FCD34D",
     description:
-      "Mendampingi praktikum, mengelola administrasi & peralatan laboratorium, menangani kendala teknis mahasiswa. Mengajar mata kuliah Sistem Informasi Geospasial (SIG), Penginderaan Jauh, dan Kartografi, serta membimbing analisis spasial menggunakan Software Spasial seperti ArcGIS, ENVI, GEE dan lainnya.",
+      "Mendampingi praktikum, mengelola administrasi & peralatan laboratorium. Mengajar mata kuliah SIG, Penginderaan Jauh, dan Kartografi, serta membimbing analisis spasial menggunakan ArcGIS, ENVI, GEE dan lainnya.",
     images: [
-      "/images/AW_1.png",
-      "/images/AW_2.png",
-      "/images/AW_3.png",
-      "/images/AW_4.png",
-      "/images/AW_5.png",
-      "/images/AW_6.png",
+      "/images/porto/AW_1.png",
+      "/images/porto/AW_2.png",
+      "/images/porto/AW_3.png",
+      "/images/porto/AW_4.png",
+      "/images/porto/AW_5.png",
+      "/images/porto/AW_6.png",
     ],
+    skills: ["ArcGIS", "GIS", "Penginderaan Jauh"],
   },
   {
-    title: "SMA NEGERI 1 BAITUSSALAM",
-    role: "GURU PENGGANTI SEMENTARA",
-    period: "Jan 2024 - Dec 2024",
+    title: "SMA Negeri 1 Baitussalam",
+    role: "Guru Geografi (Pengganti)",
+    period: "Jan 2024",
+    periodEnd: "Des 2024",
+    tag: "Mengajar",
+    tagColor: "#14B8A6",
+    accent: "#5eead4",
     description:
-      "Melaksanakan kegiatan belajar mengajar mata pelajaran Geografi kelas X, XI dan XII, Menyusun Rencana Pembelajaran dan bahan ajar relevan dengan lingkungan sekitar siswa, Membimbing siswa dalam kegiatan O2SN mata pelajaran Geografi dan Astronomi.",
+      "Melaksanakan KBM Geografi kelas X, XI, dan XII dengan pendekatan kontekstual dan berbasis proyek. Menyusun Rencana Pembelajaran dan membimbing siswa dalam O2SN Geografi dan Astronomi.",
     images: [
-      "/images/SMA 1.png",
-      "/images/SMA 2.png",
-      "/images/SMA 3.png",
-      "/images/SMA 4.png",
+      "/images/porto/SMA 1.png",
+      "/images/porto/SMA 2.png",
+      "/images/porto/SMA 3.png",
+      "/images/porto/SMA 4.png",
     ],
+    skills: ["Pengajaran", "Kurikulum", "Geografi"],
   },
   {
-    title: "SD NEGERI 58 BANDA ACEH",
-    role: "PROGRAM KAMPUS MENGAJAR",
-    period: "Feb 2023 - Jun 2023",
+    title: "SD Negeri 58 Banda Aceh",
+    role: "Program Kampus Mengajar",
+    period: "Feb 2023",
+    periodEnd: "Jun 2023",
+    tag: "Program",
+    tagColor: "#F43F5E",
+    accent: "#FB7185",
     description:
-      "Melaksanakan Program Kampus Mengajar selama 899 jam (20 SKS) dengan tugas observasi dan perancangan program sekolah, pelaksanaan AKM, penguatan literasi dan numerasi, adaptasi teknologi, serta dukungan administrasi dan manajemen sekolah. Berkontribusi dalam implementasi Kurikulum Merdeka dan penyusunan laporan kegiatan.",
+      "Melaksanakan Kampus Mengajar selama 899 jam (20 SKS) dengan tugas observasi, perancangan program, pelaksanaan AKM, penguatan literasi dan numerasi, adaptasi teknologi, serta administrasi sekolah.",
     images: [
-      "/images/KM 1.png",
-      "/images/KM 2.png",
-      "/images/KM 3.png",
-      "/images/KM 4.png",
+      "/images/porto/KM 1.png",
+      "/images/porto/KM 2.png",
+      "/images/porto/KM 3.png",
+      "/images/porto/KM 4.png",
     ],
+    skills: ["Literasi", "Numerasi", "Kurikulum Merdeka"],
   },
 ];
 
-/* ------------------------------------------------------------------ */
-/*  Image Gallery Modal                                                */
-/* ------------------------------------------------------------------ */
+// ─── GALLERY MODAL ────────────────────────────────────────────────
 function GalleryModal({
   images,
   title,
+  accent,
   onClose,
 }: {
   images: string[];
   title: string;
+  accent: string;
   onClose: () => void;
 }) {
   const [activeIndex, setActiveIndex] = useState(0);
-
   const prev = useCallback(
     () => setActiveIndex((i) => (i === 0 ? images.length - 1 : i - 1)),
-    [images.length],
+    [images.length]
   );
   const next = useCallback(
     () => setActiveIndex((i) => (i === images.length - 1 ? 0 : i + 1)),
-    [images.length],
+    [images.length]
   );
 
   useEffect(() => {
-    function onKey(e: KeyboardEvent) {
+    const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
       if (e.key === "ArrowLeft") prev();
       if (e.key === "ArrowRight") next();
-    }
+    };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose, prev, next]);
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-end justify-center sm:items-center"
+      style={{ background: "rgba(0,0,0,0.9)", backdropFilter: "blur(12px)" }}
       onClick={onClose}
-      role="dialog"
-      aria-modal="true"
-      aria-label={`Gallery: ${title}`}
     >
       <div
-        className="relative mx-4 flex w-full max-w-3xl flex-col gap-5 rounded-xl border border-border bg-card p-5 shadow-2xl sm:p-8"
+        className="relative w-full max-w-3xl overflow-hidden rounded-t-2xl border border-border bg-card sm:rounded-2xl"
+        style={{ animation: "modalSlideUp 0.4s cubic-bezier(0.16,1,0.3,1) forwards" }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between">
-          <h3 className="text-sm font-bold tracking-wide text-primary sm:text-base">
-            {title}
-          </h3>
-          <button
-            onClick={onClose}
-            className="rounded-full p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-            aria-label="Close gallery"
-          >
-            <X size={20} />
-          </button>
+        <div
+          className="flex items-center justify-between border-b border-border px-5 py-4"
+          style={{ borderLeftWidth: "3px", borderLeftColor: accent }}
+        >
+          <div>
+            <p className="text-[10px] font-medium uppercase tracking-[0.16em]" style={{ color: accent }}>
+              Galeri Foto
+            </p>
+            <h3 className="text-sm font-semibold text-foreground">{title}</h3>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="text-xs text-muted-foreground">
+              {activeIndex + 1} / {images.length}
+            </span>
+            <button
+              onClick={onClose}
+              className="flex h-8 w-8 items-center justify-center rounded-full border border-border text-muted-foreground transition-colors hover:border-primary hover:text-primary"
+            >
+              <X size={14} />
+            </button>
+          </div>
         </div>
 
         {/* Main image */}
-        <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-muted">
+        <div className="relative aspect-video w-full bg-muted/30">
           <Image
             src={images[activeIndex]}
             alt={`${title} - ${activeIndex + 1}`}
             fill
             className="object-contain"
-            sizes="(max-width: 768px) 90vw, 720px"
+            sizes="(max-width: 768px) 100vw, 768px"
           />
-
-          {/* Nav arrows */}
           {images.length > 1 && (
             <>
               <button
                 onClick={prev}
-                className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-background/70 p-1.5 text-foreground backdrop-blur transition-colors hover:bg-background"
-                aria-label="Previous image"
+                className="absolute left-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full border border-border bg-background/80 text-foreground backdrop-blur-sm transition-all hover:border-primary hover:text-primary"
               >
-                <ChevronLeft size={20} />
+                <ChevronLeft size={18} />
               </button>
               <button
                 onClick={next}
-                className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-background/70 p-1.5 text-foreground backdrop-blur transition-colors hover:bg-background"
-                aria-label="Next image"
+                className="absolute right-3 top-1/2 -translate-y-1/2 flex h-9 w-9 items-center justify-center rounded-full border border-border bg-background/80 text-foreground backdrop-blur-sm transition-all hover:border-primary hover:text-primary"
               >
-                <ChevronRight size={20} />
+                <ChevronRight size={18} />
               </button>
             </>
           )}
+
+          {/* Progress bar */}
+          <div className="absolute bottom-0 left-0 h-0.5 w-full bg-border/40">
+            <div
+              className="h-full transition-all duration-300"
+              style={{
+                width: `${((activeIndex + 1) / images.length) * 100}%`,
+                background: accent,
+              }}
+            />
+          </div>
         </div>
 
         {/* Thumbnails */}
-        <div className="flex gap-2 overflow-x-auto pb-1">
+        <div className="flex gap-2 overflow-x-auto p-4 pb-5">
           {images.map((img, i) => (
             <button
               key={i}
               onClick={() => setActiveIndex(i)}
-              className={`relative h-14 w-20 shrink-0 overflow-hidden rounded border-2 transition-all sm:h-16 sm:w-24 ${
-                i === activeIndex
-                  ? "border-primary"
-                  : "border-transparent opacity-50 hover:opacity-80"
-              }`}
-              aria-label={`View image ${i + 1}`}
+              className="relative h-14 w-20 shrink-0 overflow-hidden rounded-sm transition-all duration-200"
+              style={{
+                outline: i === activeIndex ? `2px solid ${accent}` : "2px solid transparent",
+                opacity: i === activeIndex ? 1 : 0.45,
+              }}
             >
-              <Image
-                src={img}
-                alt={`Thumbnail ${i + 1}`}
-                fill
-                className="object-cover"
-                sizes="96px"
-              />
+              <Image src={img} alt={`Thumbnail ${i + 1}`} fill className="object-cover" sizes="80px" />
             </button>
           ))}
         </div>
-
-        <p className="text-center text-xs text-muted-foreground">
-          {activeIndex + 1} / {images.length}
-        </p>
       </div>
     </div>
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  Image Grid (with See More overlay)                                 */
-/* ------------------------------------------------------------------ */
-function ImageGrid({ images, title }: { images: string[]; title: string }) {
+// ─── IMAGE GRID ───────────────────────────────────────────────────
+function ImageGrid({
+  images,
+  title,
+  accent,
+}: {
+  images: string[];
+  title: string;
+  accent: string;
+}) {
   const [open, setOpen] = useState(false);
-  const hasMore = images.length > MAX_VISIBLE_IMAGES;
-  const visibleImages = images.slice(0, MAX_VISIBLE_IMAGES);
-  const extraCount = images.length - MAX_VISIBLE_IMAGES;
+  const visible = images.slice(0, MAX_VISIBLE);
+  const extra = images.length - MAX_VISIBLE;
 
   return (
     <>
-      <div className="grid w-full grid-cols-2 gap-1.5 sm:w-[200px] lg:w-[260px]">
-        {visibleImages.map((img, i) => {
-          const isLastVisible = hasMore && i === MAX_VISIBLE_IMAGES - 1;
+      <div className="grid w-full grid-cols-2 gap-1.5 sm:w-[180px] lg:w-[220px] xl:w-[240px]">
+        {visible.map((img, i) => {
+          const isLast = extra > 0 && i === MAX_VISIBLE - 1;
           return (
             <button
               key={i}
               onClick={() => setOpen(true)}
-              className="group relative aspect-[4/3] overflow-hidden rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
-              aria-label={
-                isLastVisible
-                  ? `See ${extraCount} more images`
-                  : `View image ${i + 1}`
-              }
+              className="group relative aspect-[4/3] overflow-hidden rounded-sm focus:outline-none"
+              aria-label={isLast ? `Lihat ${extra} foto lagi` : `Foto ${i + 1}`}
             >
               <Image
                 src={img}
-                alt={`${title} portfolio ${i + 1}`}
+                alt={`${title} ${i + 1}`}
                 fill
-                className="object-cover transition-transform duration-300 group-hover:scale-105"
-                sizes="130px"
+                className="object-cover transition-transform duration-500 group-hover:scale-110"
+                sizes="120px"
               />
-              {isLastVisible && (
-                <div className="absolute inset-0 flex items-center justify-center bg-background/70 backdrop-blur-[2px] transition-colors group-hover:bg-background/60">
-                  <span className="text-xs font-semibold text-primary sm:text-sm">
-                    +{extraCount} more
+              <div
+                className="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                style={{ background: `${accent}20` }}
+              />
+              {isLast && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-background/75 backdrop-blur-[2px]">
+                  <Eye size={14} style={{ color: accent }} />
+                  <span className="text-[10px] font-semibold" style={{ color: accent }}>
+                    +{extra} foto
                   </span>
                 </div>
               )}
@@ -264,20 +324,11 @@ function ImageGrid({ images, title }: { images: string[]; title: string }) {
         })}
       </div>
 
-      {/* See More link below grid */}
-      {hasMore && (
-        <button
-          onClick={() => setOpen(true)}
-          className="mt-2 text-xs font-medium text-primary underline-offset-4 transition-colors hover:underline sm:hidden"
-        >
-          See more ({images.length} images)
-        </button>
-      )}
-
       {open && (
         <GalleryModal
           images={images}
           title={title}
+          accent={accent}
           onClose={() => setOpen(false)}
         />
       )}
@@ -285,86 +336,267 @@ function ImageGrid({ images, title }: { images: string[]; title: string }) {
   );
 }
 
-/* ------------------------------------------------------------------ */
-/*  Experience Section                                                 */
-/* ------------------------------------------------------------------ */
-export function ExperienceSection() {
+// ─── EXPERIENCE CARD ──────────────────────────────────────────────
+function ExpCard({
+  exp,
+  index,
+  isLast,
+}: {
+  exp: (typeof experiences)[number];
+  index: number;
+  isLast: boolean;
+}) {
+  const { ref, inView } = useInView(0.1);
+  const isEven = index % 2 === 0;
+  const delay = 0.05;
+
   return (
-    <section id="pengalaman" className="grid-bg py-20 lg:py-28">
-      <div className="mx-auto max-w-7xl px-6 lg:px-16">
-        {/* Section Header */}
-        <div className="mb-14 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6">
-          <h2 className="font-rehgal text-4xl text-foreground sm:text-5xl">
-            Jejak <span className="text-primary">Karir</span>
-          </h2>
-          <span className="w-fit rounded border border-foreground px-4 py-1.5 text-sm font-semibold tracking-wider text-foreground">
-            Pengalaman
-          </span>
+    <div
+      ref={ref}
+      className="group relative"
+      style={{
+        opacity: inView ? 1 : 0,
+        transform: inView ? "translateY(0)" : "translateY(32px)",
+        transition: `opacity 0.7s ease ${delay}s, transform 0.7s cubic-bezier(0.16,1,0.3,1) ${delay}s`,
+      }}
+    >
+      {/* Timeline connector */}
+      {!isLast && (
+        <div
+          className="absolute left-[19px] top-[52px] hidden w-px sm:block"
+          style={{
+            height: "calc(100% + 32px)",
+            background: `linear-gradient(to bottom, ${exp.accent}60, transparent)`,
+          }}
+        />
+      )}
+
+      <div className="flex gap-4 sm:gap-6">
+        {/* Left: dot + number */}
+        <div className="flex flex-col items-center gap-2 pt-1">
+          {/* Dot */}
+          <div
+            className="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 bg-background transition-all duration-300 group-hover:scale-110"
+            style={{ borderColor: exp.accent }}
+          >
+            <span
+              className="font-serif text-sm font-light"
+              style={{ color: exp.accent }}
+            >
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            {/* Ping for active */}
+            {exp.tag === "Aktif" && (
+              <span
+                className="absolute -right-0.5 -top-0.5 flex h-3 w-3"
+              >
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-60" style={{ background: exp.accent }} />
+                <span className="relative inline-flex h-3 w-3 rounded-full" style={{ background: exp.accent }} />
+              </span>
+            )}
+          </div>
         </div>
 
-        {/* Timeline */}
-        <div className="relative">
-          {/*
-            Desktop vertical line:
-            date pill = 88px, then 12px padding-left to center of dot (dot = 14px, center = 7px)
-            => 88 + 12 + 7 = 107px from left, but the dot container is px-[14px] so:
-            88 + 14 + 6 = 108. We use left-[101px] to center on dot visually.
-          */}
-          <div className="absolute left-[101px] top-0 hidden h-full w-0.5 bg-primary/40 sm:block" />
-          {/* Mobile vertical line */}
-          <div className="absolute left-[5px] top-0 block h-full w-0.5 bg-primary/40 sm:hidden" />
+        {/* Right: card */}
+        <div
+          className="mb-8 flex-1 overflow-hidden rounded-xl border border-border bg-card transition-all duration-300 group-hover:border-primary/30 group-hover:shadow-2xl group-hover:shadow-black/20"
+          style={{
+            borderLeftWidth: "2px",
+            borderLeftColor: `${exp.accent}60`,
+          }}
+        >
+          {/* Card header */}
+          <div
+            className="relative overflow-hidden px-5 py-4"
+            style={{
+              background: `linear-gradient(135deg, ${exp.accent}08 0%, transparent 60%)`,
+            }}
+          >
+            {/* Decorative number */}
+            <span
+              className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 font-serif text-6xl font-light opacity-[0.04] select-none"
+              style={{ color: exp.accent }}
+            >
+              {String(index + 1).padStart(2, "0")}
+            </span>
 
-          <div className="space-y-14 lg:space-y-16">
-            {experiences.map((exp, index) => (
-              <div key={index} className="relative flex flex-col sm:flex-row">
-                {/* Desktop: Date pill + dot column */}
-                <div className="mb-3 flex items-start gap-0 sm:mb-0 sm:flex-none">
-                  {/* Date pill */}
-                  <div className="hidden w-[88px] shrink-0 sm:block">
-                    <span className="inline-block w-full rounded-full border border-primary/60 bg-background px-2 py-1.5 text-center text-[11px] leading-snug tracking-wide text-primary">
-                      {exp.period}
-                    </span>
-                  </div>
-                  {/* Desktop dot - centered on the line */}
-                  <div className="hidden shrink-0 sm:flex sm:w-[28px] sm:items-center sm:justify-center">
-                    <div className="relative z-10 h-3.5 w-3.5 rounded-full border-[2.5px] border-primary bg-background" />
-                  </div>
-                </div>
-
-                {/* Mobile: dot + date inline */}
-                <div className="flex items-center gap-3 sm:hidden">
-                  <div className="relative z-10 h-3 w-3 shrink-0 rounded-full border-2 border-primary bg-background" />
-                  <span className="rounded-full border border-primary/60 bg-background px-3 py-1 text-xs tracking-wide text-primary">
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div className="min-w-0 flex-1">
+                {/* Period + tag row */}
+                <div className="mb-2 flex flex-wrap items-center gap-2">
+                  <span
+                    className="rounded-full border px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em]"
+                    style={{
+                      borderColor: `${exp.tagColor}40`,
+                      color: exp.tagColor,
+                      background: `${exp.tagColor}10`,
+                    }}
+                  >
+                    {exp.tag}
+                  </span>
+                  <span className="text-[11px] text-muted-foreground">
                     {exp.period}
+                    <span className="mx-1 text-muted-foreground/40">→</span>
+                    {exp.periodEnd}
                   </span>
                 </div>
 
-                {/* Content row */}
-                <div className="mt-3 grid flex-1 gap-6 pl-6 sm:mt-0 sm:grid-cols-[1fr_auto] sm:gap-8 sm:pl-2">
-                  {/* Text content */}
-                  <div>
-                    <h3 className="text-base font-extrabold tracking-wide text-primary sm:text-lg">
-                      {exp.title}{" "}
-                      <span className="font-normal text-muted-foreground">
-                        -
-                      </span>{" "}
-                      <span className="font-semibold uppercase text-muted-foreground">
-                        {exp.role}
-                      </span>
-                    </h3>
-                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                      {exp.description}
-                    </p>
-                  </div>
+                {/* Title */}
+                <h3
+                  className="text-base font-bold leading-tight text-foreground sm:text-lg"
+                  style={{ letterSpacing: "-0.01em" }}
+                >
+                  {exp.title}
+                </h3>
 
-                  {/* Image grid with see-more support */}
-                  <ImageGrid images={exp.images} title={exp.title} />
-                </div>
+                {/* Role */}
+                <p className="mt-0.5 text-xs font-medium uppercase tracking-[0.1em]" style={{ color: exp.accent }}>
+                  {exp.role}
+                </p>
               </div>
+
+              {/* Skill tags */}
+              <div className="hidden flex-wrap gap-1.5 sm:flex">
+                {exp.skills.map((s) => (
+                  <span
+                    key={s}
+                    className="rounded-sm border border-border bg-background/60 px-2 py-0.5 text-[10px] text-muted-foreground"
+                  >
+                    {s}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Card body */}
+          <div className="flex flex-col gap-4 px-5 py-4 sm:flex-row sm:items-start sm:gap-6">
+            {/* Description */}
+            <p className="flex-1 text-sm leading-relaxed text-muted-foreground">
+              {exp.description}
+            </p>
+
+            {/* Image grid */}
+            <div className="shrink-0">
+              <ImageGrid images={exp.images} title={exp.title} accent={exp.accent} />
+              <button
+                className="mt-2 flex items-center gap-1 text-[10px] font-medium transition-colors hover:underline"
+                style={{ color: exp.accent }}
+                onClick={() => {}}
+              >
+                <Eye size={10} />
+                {exp.images.length} foto
+              </button>
+            </div>
+          </div>
+
+          {/* Card footer — skill tags mobile */}
+          <div className="flex flex-wrap gap-1.5 border-t border-border/50 px-5 py-3 sm:hidden">
+            {exp.skills.map((s) => (
+              <span
+                key={s}
+                className="rounded-sm border border-border bg-background/60 px-2 py-0.5 text-[10px] text-muted-foreground"
+              >
+                {s}
+              </span>
             ))}
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  );
+}
+
+// ─── MAIN SECTION ─────────────────────────────────────────────────
+export function ExperienceSection() {
+  const { ref: headerRef, inView: headerInView } = useInView(0.2);
+
+  return (
+    <>
+      <section id="pengalaman" className="grid-bg relative overflow-hidden py-20 lg:py-28">
+
+        {/* Ambient glow */}
+        <div
+          className="pointer-events-none absolute -right-40 top-1/3 h-[500px] w-[500px] rounded-full"
+          style={{ background: "radial-gradient(circle, rgba(94,234,212,0.04) 0%, transparent 70%)" }}
+        />
+        <div
+          className="pointer-events-none absolute -left-40 bottom-1/3 h-[400px] w-[400px] rounded-full"
+          style={{ background: "radial-gradient(circle, rgba(94,234,212,0.03) 0%, transparent 70%)" }}
+        />
+
+        <div className="relative mx-auto max-w-7xl px-6 lg:px-16">
+
+          {/* ── HEADER ── */}
+          <div ref={headerRef} className="mb-16">
+            <div
+              style={{
+                opacity: headerInView ? 1 : 0,
+                transform: headerInView ? "translateY(0)" : "translateY(16px)",
+                transition: "opacity 0.6s ease 0.05s, transform 0.6s ease 0.05s",
+              }}
+            >
+              <div className="mb-4 flex items-center gap-3">
+                <div
+                  className="h-px bg-primary transition-all duration-700"
+                  style={{ width: headerInView ? "40px" : "0px", transitionDelay: "0.1s" }}
+                />
+                <span className="text-[11px] font-medium uppercase tracking-[0.22em] text-primary">
+                  Rekam Jejak
+                </span>
+              </div>
+
+              <div className="flex flex-wrap items-end gap-4 sm:gap-6">
+                <h2 className="font-rehgal text-5xl leading-none text-foreground sm:text-6xl lg:text-7xl">
+                  Jejak <span className="italic text-primary">Karir</span>
+                </h2>
+                <div
+                  className="mb-1 flex items-center gap-2 rounded-sm border border-foreground/20 px-4 py-1.5"
+                  style={{
+                    opacity: headerInView ? 1 : 0,
+                    transition: "opacity 0.6s ease 0.35s",
+                  }}
+                >
+                  <Briefcase size={12} className="text-muted-foreground" />
+                  <span className="text-sm font-semibold tracking-wider text-foreground">
+                    {experiences.length} Pengalaman
+                  </span>
+                </div>
+              </div>
+
+              <p
+                className="mt-4 max-w-xl text-sm leading-relaxed text-muted-foreground"
+                style={{
+                  opacity: headerInView ? 1 : 0,
+                  transition: "opacity 0.6s ease 0.25s",
+                }}
+              >
+                Perjalanan karir yang membentuk kompetensi di bidang desain grafis,
+                humas, pemetaan, dan administrasi.
+              </p>
+            </div>
+          </div>
+
+          {/* ── TIMELINE ── */}
+          <div>
+            {experiences.map((exp, i) => (
+              <ExpCard
+                key={exp.title}
+                exp={exp}
+                index={i}
+                isLast={i === experiences.length - 1}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <style jsx global>{`
+        @keyframes modalSlideUp {
+          from { opacity: 0; transform: translateY(24px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
+    </>
   );
 }
