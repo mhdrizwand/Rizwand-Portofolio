@@ -242,8 +242,8 @@ export function ContactSection() {
             <ContactCard
               icon={Mail}
               label="Email"
-              value="rizwandmuhmmad@gmail.com"
-              href="mailto:rizwandmuhmmad@gmail.com"
+              value="rizwandmuhammad@gmail.com"
+              href="mailto:rizwandmuhammad@gmail.com"
               delay={0.28}
               inView={inView}
             />
