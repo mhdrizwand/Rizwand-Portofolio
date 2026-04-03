@@ -220,7 +220,6 @@ export function HeroSection() {
                     animation: "accentPulse 3s ease-in-out infinite 0.5s",
                   }}
                 />
-
                 {/* Bottom label */}
                 <div className="absolute -bottom-8 left-0 right-0 text-center">
                   <p className="font-serif text-sm italic text-muted-foreground/60">
