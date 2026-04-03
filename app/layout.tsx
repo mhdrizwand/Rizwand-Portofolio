@@ -6,7 +6,6 @@ import "./globals.css";
 import localFont from "next/font/local";
 import CustomCursor from "@/components/CustomCursor";
 
-
 const rehgal = localFont({
   src: "../public/Font/Rehgal.ttf",
   variable: "--font-rehgal",
@@ -37,6 +36,9 @@ export const metadata: Metadata = {
     images: [{ url: "/images/Profil.jpeg" }],
     locale: "id_ID",
     type: "website",
+  },
+  icons: {
+    icon: "/icons.ico",
   },
 };
 
