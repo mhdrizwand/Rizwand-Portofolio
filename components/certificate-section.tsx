@@ -85,7 +85,7 @@ const certificates = [
     category: "lainnya",
     date: "2024-2025",
     badge: "Certified",
-    img: "/images/sertifikat/ST_lainya.png",
+    img: "/images/sertifikat/ST_lainnya.png",
   },
 ];
 
