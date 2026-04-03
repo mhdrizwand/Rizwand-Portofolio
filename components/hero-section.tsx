@@ -88,6 +88,7 @@ export function HeroSection() {
       else if (w < 1280) setGlobeSize(460);
       else setGlobeSize(540);
     }
+
     update();
     window.addEventListener("resize", update);
     return () => window.removeEventListener("resize", update);
@@ -204,15 +205,17 @@ export function HeroSection() {
 
                 {/* Right accent line */}
                 <div
-                  className="absolute -right-4 top-[10%] h-[80%] w-px"
+                  className="absolute right-0 top-[10%] h-[80%] w-px"
                   style={{
                     background:
                       "linear-gradient(to bottom, transparent, rgba(94,234,212,0.5), transparent)",
                     animation: "accentPulse 3s ease-in-out infinite",
                   }}
                 />
+
+                {/* Dot */}
                 <div
-                  className="absolute -right-[18px] top-1/2 h-2.5 w-2.5 -translate-y-1/2 rounded-full border-[1.5px] border-primary/60"
+                  className="absolute right-0 top-1/2 h-2.5 w-2.5 -translate-y-1/2 translate-x-1/2 rounded-full border-[1.5px] border-primary/60"
                   style={{
                     animation: "accentPulse 3s ease-in-out infinite 0.5s",
                   }}

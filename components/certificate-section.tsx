@@ -49,7 +49,7 @@ const certificates = [
     category: "desain",
     date: "Februari 2025",
     badge: "Complete",
-    img: "/images/sertifikat/veve.png",
+    img: "/images/sertifikat/ST_ru.png",
   },
   {
     id: 6,
