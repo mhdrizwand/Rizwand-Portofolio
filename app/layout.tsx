@@ -37,9 +37,6 @@ export const metadata: Metadata = {
     locale: "id_ID",
     type: "website",
   },
-  icons: {
-    icon: "/icons.ico?v=2",
-  },
 };
 
 export const viewport: Viewport = {
