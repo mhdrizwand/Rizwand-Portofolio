@@ -297,8 +297,8 @@ export function HeroSection() {
               className="mt-8 flex flex-wrap justify-center gap-3 lg:justify-start"
             >
               <a
-                href="/cv/CV M Rizwan.pdf"
-                download="CV_M_Rizwan.pdf"
+                href="/cv/cv_muhammad_rizwan.pdf"
+                download="cv_muhammad_rizwan.pdf"
                 className="group relative inline-flex items-center gap-2 overflow-hidden rounded-sm bg-primary px-6 py-3 text-xs font-semibold uppercase tracking-[0.12em] text-primary-foreground transition-all duration-300 hover:opacity-90 hover:shadow-lg hover:shadow-primary/25"
               >
                 <span className="absolute inset-0 -translate-x-full bg-white/10 transition-transform duration-500 group-hover:translate-x-full" />

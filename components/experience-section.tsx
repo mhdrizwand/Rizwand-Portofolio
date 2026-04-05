@@ -12,8 +12,13 @@ function useInView(threshold = 0.12) {
     const el = ref.current;
     if (!el) return;
     const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { setInView(true); obs.disconnect(); } },
-      { threshold }
+      ([e]) => {
+        if (e.isIntersecting) {
+          setInView(true);
+          obs.disconnect();
+        }
+      },
+      { threshold },
     );
     obs.observe(el);
     return () => obs.disconnect();
@@ -37,6 +42,7 @@ const experiences = [
       "Sebagai Pembina Kepribadian, mendukung administrasi dan pelaksanaan program pembinaan warga binaan serta menyusun laporan kegiatan. Di bagian Humas, bertanggung jawab dalam pembuatan desain materi publikasi dan media informasi lembaga.",
     images: [
       "/images/porto/PAS 11.png",
+      "/images/porto/PAS 13.png",
       "/images/porto/PAS 12.png",
       "/images/porto/PAS 1.png",
       "/images/porto/PAS 2.png",
@@ -163,11 +169,11 @@ function GalleryModal({
   const [activeIndex, setActiveIndex] = useState(0);
   const prev = useCallback(
     () => setActiveIndex((i) => (i === 0 ? images.length - 1 : i - 1)),
-    [images.length]
+    [images.length],
   );
   const next = useCallback(
     () => setActiveIndex((i) => (i === images.length - 1 ? 0 : i + 1)),
-    [images.length]
+    [images.length],
   );
 
   useEffect(() => {
@@ -188,7 +194,9 @@ function GalleryModal({
     >
       <div
         className="relative w-full max-w-3xl overflow-hidden rounded-t-2xl border border-border bg-card sm:rounded-2xl"
-        style={{ animation: "modalSlideUp 0.4s cubic-bezier(0.16,1,0.3,1) forwards" }}
+        style={{
+          animation: "modalSlideUp 0.4s cubic-bezier(0.16,1,0.3,1) forwards",
+        }}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
@@ -197,7 +205,10 @@ function GalleryModal({
           style={{ borderLeftWidth: "3px", borderLeftColor: accent }}
         >
           <div>
-            <p className="text-[10px] font-medium uppercase tracking-[0.16em]" style={{ color: accent }}>
+            <p
+              className="text-[10px] font-medium uppercase tracking-[0.16em]"
+              style={{ color: accent }}
+            >
               Galeri Foto
             </p>
             <h3 className="text-sm font-semibold text-foreground">{title}</h3>
@@ -261,11 +272,20 @@ function GalleryModal({
               onClick={() => setActiveIndex(i)}
               className="relative h-14 w-20 shrink-0 overflow-hidden rounded-sm transition-all duration-200"
               style={{
-                outline: i === activeIndex ? `2px solid ${accent}` : "2px solid transparent",
+                outline:
+                  i === activeIndex
+                    ? `2px solid ${accent}`
+                    : "2px solid transparent",
                 opacity: i === activeIndex ? 1 : 0.45,
               }}
             >
-              <Image src={img} alt={`Thumbnail ${i + 1}`} fill className="object-cover" sizes="80px" />
+              <Image
+                src={img}
+                alt={`Thumbnail ${i + 1}`}
+                fill
+                className="object-cover"
+                sizes="80px"
+              />
             </button>
           ))}
         </div>
@@ -314,7 +334,10 @@ function ImageGrid({
               {isLast && (
                 <div className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-background/75 backdrop-blur-[2px]">
                   <Eye size={14} style={{ color: accent }} />
-                  <span className="text-[10px] font-semibold" style={{ color: accent }}>
+                  <span
+                    className="text-[10px] font-semibold"
+                    style={{ color: accent }}
+                  >
                     +{extra} foto
                   </span>
                 </div>
@@ -387,11 +410,15 @@ function ExpCard({
             </span>
             {/* Ping for active */}
             {exp.tag === "Aktif" && (
-              <span
-                className="absolute -right-0.5 -top-0.5 flex h-3 w-3"
-              >
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-60" style={{ background: exp.accent }} />
-                <span className="relative inline-flex h-3 w-3 rounded-full" style={{ background: exp.accent }} />
+              <span className="absolute -right-0.5 -top-0.5 flex h-3 w-3">
+                <span
+                  className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-60"
+                  style={{ background: exp.accent }}
+                />
+                <span
+                  className="relative inline-flex h-3 w-3 rounded-full"
+                  style={{ background: exp.accent }}
+                />
               </span>
             )}
           </div>
@@ -450,7 +477,10 @@ function ExpCard({
                 </h3>
 
                 {/* Role */}
-                <p className="mt-0.5 text-xs font-medium uppercase tracking-[0.1em]" style={{ color: exp.accent }}>
+                <p
+                  className="mt-0.5 text-xs font-medium uppercase tracking-[0.1em]"
+                  style={{ color: exp.accent }}
+                >
                   {exp.role}
                 </p>
               </div>
@@ -478,7 +508,11 @@ function ExpCard({
 
             {/* Image grid */}
             <div className="shrink-0">
-              <ImageGrid images={exp.images} title={exp.title} accent={exp.accent} />
+              <ImageGrid
+                images={exp.images}
+                title={exp.title}
+                accent={exp.accent}
+              />
               <button
                 className="mt-2 flex items-center gap-1 text-[10px] font-medium transition-colors hover:underline"
                 style={{ color: exp.accent }}
@@ -513,33 +547,44 @@ export function ExperienceSection() {
 
   return (
     <>
-      <section id="pengalaman" className="grid-bg relative overflow-hidden py-20 lg:py-28">
-
+      <section
+        id="pengalaman"
+        className="grid-bg relative overflow-hidden py-20 lg:py-28"
+      >
         {/* Ambient glow */}
         <div
           className="pointer-events-none absolute -right-40 top-1/3 h-[500px] w-[500px] rounded-full"
-          style={{ background: "radial-gradient(circle, rgba(94,234,212,0.04) 0%, transparent 70%)" }}
+          style={{
+            background:
+              "radial-gradient(circle, rgba(94,234,212,0.04) 0%, transparent 70%)",
+          }}
         />
         <div
           className="pointer-events-none absolute -left-40 bottom-1/3 h-[400px] w-[400px] rounded-full"
-          style={{ background: "radial-gradient(circle, rgba(94,234,212,0.03) 0%, transparent 70%)" }}
+          style={{
+            background:
+              "radial-gradient(circle, rgba(94,234,212,0.03) 0%, transparent 70%)",
+          }}
         />
 
         <div className="relative mx-auto max-w-7xl px-6 lg:px-16">
-
           {/* ── HEADER ── */}
           <div ref={headerRef} className="mb-16">
             <div
               style={{
                 opacity: headerInView ? 1 : 0,
                 transform: headerInView ? "translateY(0)" : "translateY(16px)",
-                transition: "opacity 0.6s ease 0.05s, transform 0.6s ease 0.05s",
+                transition:
+                  "opacity 0.6s ease 0.05s, transform 0.6s ease 0.05s",
               }}
             >
               <div className="mb-4 flex items-center gap-3">
                 <div
                   className="h-px bg-primary transition-all duration-700"
-                  style={{ width: headerInView ? "40px" : "0px", transitionDelay: "0.1s" }}
+                  style={{
+                    width: headerInView ? "40px" : "0px",
+                    transitionDelay: "0.1s",
+                  }}
                 />
                 <span className="text-[11px] font-medium uppercase tracking-[0.22em] text-primary">
                   Rekam Jejak
@@ -571,8 +616,8 @@ export function ExperienceSection() {
                   transition: "opacity 0.6s ease 0.25s",
                 }}
               >
-                Perjalanan karir yang membentuk kompetensi di bidang desain grafis,
-                humas, pemetaan, dan administrasi.
+                Perjalanan karir yang membentuk kompetensi di bidang desain
+                grafis, humas, pemetaan, dan administrasi.
               </p>
             </div>
           </div>
@@ -593,8 +638,14 @@ export function ExperienceSection() {
 
       <style jsx global>{`
         @keyframes modalSlideUp {
-          from { opacity: 0; transform: translateY(24px); }
-          to   { opacity: 1; transform: translateY(0); }
+          from {
+            opacity: 0;
+            transform: translateY(24px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
       `}</style>
     </>
